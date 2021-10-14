@@ -1,0 +1,19 @@
+{
+  "name": "@jmarroyave/fw-console",
+  "version": "1.0.6",
+  "description": "",
+  "license": "MIT",
+  "type": "module",
+  "repository": "jmarroyave-compsci/fw-console-node",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "jmarroyave",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^9.1.2"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
