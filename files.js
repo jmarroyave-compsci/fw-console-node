@@ -1,20 +1,23 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import parse from 'csv-parse/lib/sync.js';
 
 const append = (f, data) => {
   fs.appendFileSync(f, data);
 }
-const get = (f) => fs.readFileSync(f);
+const get = (f) => fs.readFileSync(f).toString();
 const getJSON = (f) => JSON.parse(fs.readFileSync(f));
 const saveJSON = (f, data) => fs.writeFileSync(f, JSON.stringify(data, null, 2));
 const exists = f => fs.existsSync(f)
 const getDirname = () => {
   return path.resolve(path.dirname(getFilename()));  
 }
+
 const getFilename = () => {
   return fileURLToPath(getCallerFile());
 }
+
 const getCallerFile = () => {
     var originalFunc = Error.prepareStackTrace;
 
@@ -39,6 +42,19 @@ const getCallerFile = () => {
     return callerfile;
 }
 
+const copy = ( source, target ) => fs.copyFileSync( source, target );
+
+const getFiles = ( path ) => {
+  return fs.readdirSync( path );
+}
+
+const getCSV = ( file ) => {
+  return parse( get(file), {
+    columns: true,
+    skip_empty_lines: true
+  })
+}
+
 export default {
-  get, getJSON, saveJSON, exists, getDirname, getCallerFile, getFilename, append
+  get, getJSON, saveJSON, exists, getDirname, getCallerFile, getFilename, append, copy, getFiles, getCSV
 };
