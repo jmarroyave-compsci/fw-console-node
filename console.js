@@ -13,13 +13,12 @@ const log = function() {
 const error = function(){ 
 	n()
 	n()
-	line(chalk.red("+"))
-	line(chalk.red("+"))
+	line(chalk.red("*"))
 	n()
-	console.error.apply(this, arguments)
+	const args = Object.keys(arguments).map( k => chalk.red.bold(arguments[k]))
+	console.error.apply(this, args)
 	n()
-	line(chalk.red("+"))
-	line(chalk.red("+"))
+	line(chalk.red("*"))
 	n()
 };
 
@@ -27,7 +26,8 @@ const debug = function(){
 	n()
 	line(chalk.green("-"))
 	log(chalk.green("DEBUG"))
-	console.error.apply(this, arguments)
+	const args = Object.keys(arguments).map( k => chalk.green.bold(arguments[k]))
+	console.error.apply(this, args)
 	line(chalk.green("-"))
 	n()
 };
@@ -36,8 +36,8 @@ const debug = function(){
 const info = function(){ 
 	n()
 	line(chalk.blue("-"))
-	log(chalk.blue("INFO"))
-	console.error.apply(this, arguments)
+	const args = Object.keys(arguments).map( k => chalk.blue.bold(arguments[k]))
+	console.error.apply(this, args)
 	line(chalk.blue("-"))
 	n()
 };

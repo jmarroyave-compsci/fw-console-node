@@ -7,8 +7,12 @@ const append = (f, data) => {
   fs.appendFileSync(f, data);
 }
 const get = (f) => fs.readFileSync(f).toString();
-const getJSON = (f) => JSON.parse(fs.readFileSync(f));
-const saveJSON = (f, data) => fs.writeFileSync(f, JSON.stringify(data, null, 2));
+const save = (f, data) => fs.writeFileSync(f, data);
+const getJSON = (f, ifNull) => {
+  if(ifNull && !exists(f)) return ifNull
+  return JSON.parse(get(f));
+}
+const saveJSON = (f, data) => save(f, JSON.stringify(data, null, 2));
 const exists = f => fs.existsSync(f)
 const getDirname = () => {
   return path.resolve(path.dirname(getFilename()));  
@@ -48,13 +52,43 @@ const getFiles = ( path ) => {
   return fs.readdirSync( path );
 }
 
-const getCSV = ( file ) => {
+const getCSV = ( file, options={} ) => {
   return parse( get(file), {
-    columns: true,
-    skip_empty_lines: true
+    columns: options?.columns ?? true,
+    skip_empty_lines: true,
+    delimiter: options?.delimiter ?? ",",
+    quote: ("quote" in options ) ? options.quote : "\"",
   })
 }
 
+const mkdir = ( path ) => {
+  if( !exists(path) )
+    fs.mkdirSync( path, { recursive: true } );
+}
+
+
+const isDirectory = ( path ) => {
+  return fs.lstatSync(path).isDirectory() 
+}
+
+const rename = ( path, npath ) => {
+  return move(path, npath)
+}
+
+const move = ( path, npath ) => {
+  return fs.renameSync(path, npath) 
+}
+
+const getSize = ( path ) => {
+  var stats = fs.statSync( path )
+  return stats.size;
+}
+
+const isEmpty = ( path ) => {
+  return getSize( path ) == 0
+}
+
+
 export default {
-  get, getJSON, saveJSON, exists, getDirname, getCallerFile, getFilename, append, copy, getFiles, getCSV
+  isEmpty, getSize, move, rename, isDirectory, mkdir, get, save, getJSON, saveJSON, exists, getDirname, getCallerFile, getFilename, append, copy, getFiles, getCSV
 };

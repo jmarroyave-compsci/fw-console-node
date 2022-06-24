@@ -1,5 +1,5 @@
 
-const sleep = async(f) => new Promise( (aa, ab) => setTimeout( () => aa() , 500)); 
+const sleep = async( ms ) => new Promise( (aa, ab) => setTimeout( () => aa() , ms)); 
 
 export default {
   sleep
